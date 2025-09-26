@@ -1,5 +1,6 @@
 export default function Popup(props) {
-  const { title, children } = props;
+  const { onClose, title, children } = props;
+
   return (
     <div className="popup modal" id="modal">
       <div className="modal-content">

@@ -1,6 +1,18 @@
 import avatar from "../../../images/Avatar.png";
+import { useState } from "react";
 
 export default function Main() {
+  const [popup, setPopup] = useState(null);
+
+  const newCardPopup = { title: "New card", children: <NewCard /> };
+
+  function handleOpenPopup(popup) {
+    setPopup(popup);
+  }
+  function handleClosePopup() {
+    setPopup(null);
+  }
+
   return (
     <main className="page">
       <div className="author">
@@ -33,6 +45,11 @@ export default function Main() {
           </div>
         </template>
       </section>
+      {popup && (
+        <Popup onClose={handleClosePopup} title={popup.title}>
+          {popup.children}
+        </Popup>
+      )}
     </main>
   );
 }
