@@ -1,0 +1,28 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #000000;
+}
+
+.page-header {
+  max-width: 880px;
+  margin: 45px 199px;
+}
+
+.page-logo {
+  margin: auto;
+}
+
+@media screen and (max-width: 1024px) {
+  .page-logo {
+    display: flex;
+  }
+
+  @media screen and (max-width: 544px) {
+    .page-logo {
+      display: flex;
+      margin: auto;
+    }
+  }
+}
