@@ -5,8 +5,8 @@ export default function NewCard() {
         type="text"
         id="nameInput"
         name="nameInput"
-        minlength="2"
-        maxlength="40"
+        minLength="2"
+        maxLength="40"
         required
       />
       <span className="error-Message"></span>
@@ -14,8 +14,8 @@ export default function NewCard() {
         type="text"
         id="titleInput"
         name="titleInput"
-        minlength="2"
-        maxlength="200"
+        minLength="2"
+        maxLength="200"
         required
       />
       <span className="error-Message"></span>

@@ -6,7 +6,7 @@ export default function Card(props) {
         className="element-image"
         src={link}
         alt={name}
-        onClick={() => onCardClick(card)}
+        onClick={() => onCardClick(props.card)}
       />
       <button className="element-delete-btn" type="button" />
       <p className="element-image-title">

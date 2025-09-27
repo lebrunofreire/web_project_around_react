@@ -1,5 +1,7 @@
 import { useState } from "react";
 import avatar from "../../../images/Avatar.png";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 import Card from "../Card/Card";
 import Popup from "../Popup/Popup";
 import NewCard from "../NewCard/NewCard";
@@ -47,39 +49,43 @@ export default function Main() {
   }
 
   return (
-    <main className="page">
-      <div className="author">
-        <div className="author-avatar-container">
-          <img className="author-image" src={avatar} alt="Autor" />
-          <button
-            className="author-avatar-edit-button"
-            type="button"
-            onClick={() => handleOpenPopup(newCardPopup)}
-          ></button>
-        </div>
-        <div className="author-info">
-          <div className="author-name-wrapper">
-            <h1 id="profileName" className="author-name">
-              Jacques Cousteau
-            </h1>
-            <button id="openModalBtn" className="author-edit"></button>
+    <>
+      <main className="page">
+        <Header />
+        <div className="author">
+          <div className="author-avatar-container">
+            <img className="author-image" src={avatar} alt="Autor" />
+            <button
+              className="author-avatar-edit-button"
+              type="button"
+              onClick={() => handleOpenPopup(newCardPopup)}
+            ></button>
           </div>
-          <p className="author-subtitle" id="profileTitle">
-            Explorador
-          </p>
+          <div className="author-info">
+            <div className="author-name-wrapper">
+              <h1 id="profileName" className="author-name">
+                Jacques Cousteau
+              </h1>
+              <button id="openModalBtn" className="author-edit"></button>
+            </div>
+            <p className="author-subtitle" id="profileTitle">
+              Explorador
+            </p>
+          </div>
+          <button id="openPlaceModalBtn" className="author-add"></button>
         </div>
-        <button id="openPlaceModalBtn" className="author-add"></button>
-      </div>
-      <ul className="elements">
-        {cards.map((card) => (
-          <Card key={card._id} card={card} onCardClick={handleCardClick} />
-        ))}
-      </ul>
-      {popup && (
-        <Popup onClose={handleClosePopup} title={popup.title}>
-          {popup.children}
-        </Popup>
-      )}
-    </main>
+        <ul className="elements">
+          {cards.map((card) => (
+            <Card key={card._id} card={card} onCardClick={handleCardClick} />
+          ))}
+        </ul>
+        {popup && (
+          <Popup onClose={handleClosePopup} title={popup.title}>
+            {popup.children}
+          </Popup>
+        )}
+        <Footer />
+      </main>
+    </>
   );
 }
