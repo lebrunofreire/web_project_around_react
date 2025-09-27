@@ -1,5 +1,8 @@
 import avatar from "../../../images/Avatar.png";
 import { useState } from "react";
+import Card from "../Card/Card";
+import Popup from "../Popup/Popup";
+import NewCard from "../NewCard/NewCard";
 
 const cards = [
   {
