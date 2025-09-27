@@ -1,4 +1,4 @@
-import "./App.css";
+import "./index.css";
 import Header from "./Header/Header";
 import Main from "./Main/Main";
 import Footer from "./Footer/Footer";
@@ -12,7 +12,6 @@ function App() {
       <div className="page__content">
         <Header />
         <Main />
-        <Author />
         <Footer />
       </div>
     </>

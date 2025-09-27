@@ -3,6 +3,15 @@ import { useState } from "react";
 import Card from "../Card/Card";
 import Popup from "../Popup/Popup";
 import NewCard from "../NewCard/NewCard";
+import ImagePopup from "../ImagePopup/ImagePopup";
+
+function handleCardClick(card) {
+  const imagePopup = {
+    title: null,
+    children: <ImagePopup image={card} />,
+  };
+  setPopup(imagePopup);
+}
 
 const cards = [
   {
