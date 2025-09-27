@@ -8,8 +8,8 @@ export default function EditAvatar() {
         placeholder="URL da nova imagem"
         required
       />
-      <span class="error-Message"></span>
-      <button class="modal-save-button" type="submit">
+      <span className="error-Message"></span>
+      <button className="modal-save-button" type="submit">
         Salvar...
       </button>
     </form>

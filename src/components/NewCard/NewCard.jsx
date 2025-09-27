@@ -1,26 +1,26 @@
 export default function NewCard() {
   return (
-    <form id="profileForm" name="card-form" noValidate>
+    <form id="placeForm">
       <input
         type="text"
-        id="nameInput"
-        name="nameInput"
+        id="placeTitleInput"
+        name="placeTitleInput"
+        placeholder="Title"
         minLength="2"
-        maxLength="40"
+        maxLength="30"
         required
       />
       <span className="error-Message"></span>
       <input
-        type="text"
-        id="titleInput"
-        name="titleInput"
-        minLength="2"
-        maxLength="200"
+        type="url"
+        id="placeImageUrl"
+        name="placeImageUrl"
+        placeholder="Image URL"
         required
       />
       <span className="error-Message"></span>
-      <button className="modal-save-button" type="submit">
-        Salvar...
+      <button className="modal-save-button" type="submit" id="savePlaceBtn">
+        Crie
       </button>
     </form>
   );

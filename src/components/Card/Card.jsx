@@ -1,12 +1,13 @@
-export default function Card(props) {
-  const { name, link, isLiked, onCardClick } = props.card;
+export default function Card({ card, onCardClick }) {
+  const { name, link, isLiked } = card;
+
   return (
     <li className="element">
       <img
         className="element-image"
         src={link}
         alt={name}
-        onClick={() => onCardClick(props.card)}
+        onClick={() => onCardClick(card)}
       />
       <button className="element-delete-btn" type="button" />
       <p className="element-image-title">

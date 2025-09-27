@@ -5,23 +5,23 @@ export default function EditProfile() {
         type="text"
         id="nameInput"
         name="nameInput"
-        value="Jacques Cousteau"
-        minlength="2"
-        maxlength="40"
+        placeholder="Name"
+        minLength="2"
+        maxLength="40"
         required
       />
-      <span class="error-Message"></span>
+      <span className="error-Message"></span>
       <input
         type="text"
         id="titleInput"
         name="titleInput"
-        value="Explorador"
-        minlength="2"
-        maxlength="200"
+        placeholder="Title"
+        minLength="2"
+        maxLength="200"
         required
       />
-      <span class="error-Message"></span>
-      <button class="modal-save-button" type="submit">
+      <span className="error-Message"></span>
+      <button className="modal-save-button" type="submit">
         Salvar...
       </button>
     </form>

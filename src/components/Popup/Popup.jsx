@@ -1,18 +1,13 @@
-export default function Popup(props) {
-  const { onClose, title, children } = props;
+export default function Popup({ onClose, title, children }) {
+  const isImagePopup = !title && children?.type?.name === "ImagePopup";
 
   return (
-    <div className="popup modal" id="modal">
-      <div className="modal-content">
-        <button
-          className="popup__close close-button"
-          id="closeModalBtn"
-          onClick={onClose}
-          type="button"
-        >
+    <div className="modal">
+      <div className={isImagePopup ? "modal-image" : "modal-content"}>
+        <button className="close-button" onClick={onClose} type="button">
           ×
         </button>
-        <h3 className="popup__title">{title}</h3>
+        {!isImagePopup && title && <h3>{title}</h3>}
         {children}
       </div>
     </div>
