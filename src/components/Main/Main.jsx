@@ -1,17 +1,9 @@
-import avatar from "../../../images/Avatar.png";
 import { useState } from "react";
+import avatar from "../../../images/Avatar.png";
 import Card from "../Card/Card";
 import Popup from "../Popup/Popup";
 import NewCard from "../NewCard/NewCard";
 import ImagePopup from "../ImagePopup/ImagePopup";
-
-function handleCardClick(card) {
-  const imagePopup = {
-    title: null,
-    children: <ImagePopup image={card} />,
-  };
-  setPopup(imagePopup);
-}
 
 const cards = [
   {
@@ -46,6 +38,14 @@ export default function Main() {
     setPopup(null);
   }
 
+  function handleCardClick(card) {
+    const imagePopup = {
+      title: null,
+      children: <ImagePopup image={card} />,
+    };
+    setPopup(imagePopup);
+  }
+
   return (
     <main className="page">
       <div className="author">
@@ -72,7 +72,7 @@ export default function Main() {
       </div>
       <ul className="elements">
         {cards.map((card) => (
-          <Card key={card._id} card={card} />
+          <Card key={card._id} card={card} onCardClick={handleCardClick} />
         ))}
       </ul>
       {popup && (
