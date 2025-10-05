@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import avatar from "../../../images/Avatar.png";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -8,30 +8,24 @@ import NewCard from "../NewCard/NewCard";
 import ImagePopup from "../ImagePopup/ImagePopup";
 import EditAvatar from "../EditAvatar/EditAvatar";
 import EditProfile from "../EditProfile/EditProfile";
-
-const cards = [
-  {
-    isLiked: false,
-    _id: "5d1f0611d321eb4bdcd707dd",
-    name: "Yosemite Valley",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-    owner: "5d1f0611d321eb4bdcd707dd",
-    createdAt: "2019-07-05T08:10:57.741Z",
-  },
-  {
-    isLiked: false,
-    _id: "5d1f064ed321eb4bdcd707de",
-    name: "Lake Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-    owner: "5d1f0611d321eb4bdcd707dd",
-    createdAt: "2019-07-05T08:11:58.324Z",
-  },
-];
-
-console.log(cards);
+import api from "../../utils/api";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 export default function Main() {
+  const { currentUser } = useContext(CurrentUserContext);
+  const [cards, setCards] = useState([]);
   const [popup, setPopup] = useState(null);
+
+  useEffect(() => {
+    api
+      .getInitialCards()
+      .then((data) => {
+        setCards(data);
+      })
+      .catch((err) => {
+        console.error("Erro ao buscar cartões:", err);
+      });
+  }, []);
 
   const newCardPopup = { title: "New card", children: <NewCard /> };
   const editAvatarPopup = { title: "Edit avatar", children: <EditAvatar /> };
@@ -40,6 +34,7 @@ export default function Main() {
   function handleOpenPopup(popup) {
     setPopup(popup);
   }
+
   function handleClosePopup() {
     setPopup(null);
   }
@@ -52,13 +47,45 @@ export default function Main() {
     setPopup(imagePopup);
   }
 
+  function handleCardDelete(card) {
+    api
+      .deleteCard(card._id)
+      .then(() => {
+        setCards((state) => state.filter((c) => c._id !== card._id));
+      })
+      .catch((err) => {
+        console.error("Erro ao excluir o cartão:", err);
+      });
+  }
+
+  function handleCardLike(card) {
+    const isLiked = card.likes.some((user) => user._id === currentUser._id);
+
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((currentCard) =>
+            currentCard._id === card._id ? newCard : currentCard
+          )
+        );
+      })
+      .catch((err) => {
+        console.error("Erro ao curtir/descurtir o cartão:", err);
+      });
+  }
+
   return (
     <>
       <main className="page">
         <Header />
         <div className="author">
           <div className="author-avatar-container">
-            <img className="author-image" src={avatar} alt="Autor" />
+            <img
+              className="author-image"
+              src={currentUser.avatar || avatar}
+              alt="Autor"
+            />
             <button
               className="author-avatar-edit-button"
               type="button"
@@ -68,7 +95,7 @@ export default function Main() {
           <div className="author-info">
             <div className="author-name-wrapper">
               <h1 id="profileName" className="author-name">
-                Jacques Cousteau
+                {currentUser.name}
               </h1>
               <button
                 id="openModalBtn"
@@ -77,7 +104,7 @@ export default function Main() {
               ></button>
             </div>
             <p className="author-subtitle" id="profileTitle">
-              Explorador
+              {currentUser.about}
             </p>
           </div>
           <button
@@ -88,7 +115,13 @@ export default function Main() {
         </div>
         <ul className="elements">
           {cards.map((card) => (
-            <Card key={card._id} card={card} onCardClick={handleCardClick} />
+            <Card
+              key={card._id}
+              card={card}
+              onCardClick={handleCardClick}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
+            />
           ))}
         </ul>
         <Footer />
