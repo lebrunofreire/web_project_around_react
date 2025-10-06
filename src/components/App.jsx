@@ -47,7 +47,9 @@ function App() {
   }
 
   return (
-    <CurrentUserContext.Provider value={{ currentUser, handleUpdateUser }}>
+    <CurrentUserContext.Provider
+      value={{ currentUser, handleUpdateUser, handleUpdateAvatar }}
+    >
       <Main
         onOpenPopup={handleOpenPopup}
         onClosePopup={handleClosePopup}
