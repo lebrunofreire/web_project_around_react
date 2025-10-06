@@ -11,13 +11,12 @@ import EditProfile from "../EditProfile/EditProfile";
 import api from "../../utils/api";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-export default function Main({{ onOpenPopup, onClosePopup, popup }}) {
+export default function Main({ onOpenPopup, onClosePopup, popup }) {
   const { currentUser } = useContext(CurrentUserContext);
   const [cards, setCards] = useState([]);
   const newCardPopup = { title: "New card", children: <NewCard /> };
   const editAvatarPopup = { title: "Edit avatar", children: <EditAvatar /> };
   const editProfilePopup = { title: "Edit profile", children: <EditProfile /> };
-
 
   useEffect(() => {
     api
@@ -29,10 +28,6 @@ export default function Main({{ onOpenPopup, onClosePopup, popup }}) {
         console.error("Erro ao buscar cartões:", err);
       });
   }, []);
-
-  const newCardPopup = { title: "New card", children: <NewCard /> };
-  const editAvatarPopup = { title: "Edit avatar", children: <EditAvatar /> };
-  const editProfilePopup = { title: "Edit profile", children: <EditProfile /> };
 
   function handleCardClick(card) {
     const imagePopup = {
