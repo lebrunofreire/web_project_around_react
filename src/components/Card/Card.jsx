@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-export default function Card({ card, onCardClick }) {
+export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   const { name, link, isLiked } = card;
   const cardLikeButtonClassName = `element-image-like ${
     isLiked ? "element-image-like_active" : ""
@@ -26,21 +26,19 @@ export default function Card({ card, onCardClick }) {
         alt={name}
         onClick={() => onCardClick(card)}
       />
-      <button className="element-delete-btn" type="button" />
+      {isOwn && (
+        <button
+          className="element-delete-btn"
+          type="button"
+          onClick={handleDeleteClick}
+        />
+      )}
       <p className="element-image-title">
         <span>{name}</span>
         <button
           className={cardLikeButtonClassName}
-          type="button"
           onClick={handleLikeClick}
         ></button>
-        {isOwn && (
-          <button
-            className="card__delete-button"
-            type="button"
-            onClick={handleDeleteClick}
-          />
-        )}
       </p>
     </li>
   );

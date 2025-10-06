@@ -48,10 +48,12 @@ export default function Main({ onOpenPopup, onClosePopup, popup }) {
       });
   }
 
-  function handleCardLike(card) {
-    const isLiked = card.likes.some((user) => user._id === currentUser._id);
+  async function handleCardLike(card) {
+    // Verificar mais uma vez se esse cartão já foi curtido
+    const isLiked = card.isLiked;
 
-    api
+    // Enviar uma solicitação para a API e obter os dados do cartão atualizados
+    await api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
         setCards((state) =>
@@ -60,9 +62,7 @@ export default function Main({ onOpenPopup, onClosePopup, popup }) {
           )
         );
       })
-      .catch((err) => {
-        console.error("Erro ao curtir/descurtir o cartão:", err);
-      });
+      .catch((error) => console.error(error));
   }
 
   return (
