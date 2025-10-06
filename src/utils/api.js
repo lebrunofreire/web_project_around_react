@@ -55,8 +55,9 @@ class Api {
     return this._makeRequest(`/cards/${cardId}`, "DELETE");
   }
 
-  likeCard(cardId) {
-    return this._makeRequest(`/cards/${cardId}/likes`, "PUT");
+  changeLikeCardStatus(cardId, isLiked) {
+    const method = isLiked ? "PUT" : "DELETE";
+    return this._makeRequest(`/cards/${cardId}/likes`, method);
   }
 
   unlikeCard(cardId) {

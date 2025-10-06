@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useContext } from "react";
 import avatar from "../../../images/Avatar.png";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -8,61 +8,28 @@ import NewCard from "../NewCard/NewCard";
 import ImagePopup from "../ImagePopup/ImagePopup";
 import EditAvatar from "../EditAvatar/EditAvatar";
 import EditProfile from "../EditProfile/EditProfile";
-import api from "../../utils/api";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-export default function Main({ onOpenPopup, onClosePopup, popup }) {
+export default function Main({
+  onOpenPopup,
+  onClosePopup,
+  popup,
+  cards,
+  onCardLike,
+  onCardDelete,
+}) {
   const { currentUser } = useContext(CurrentUserContext);
-  const [cards, setCards] = useState([]);
+
   const newCardPopup = { title: "New card", children: <NewCard /> };
   const editAvatarPopup = { title: "Edit avatar", children: <EditAvatar /> };
   const editProfilePopup = { title: "Edit profile", children: <EditProfile /> };
-
-  useEffect(() => {
-    api
-      .getInitialCards()
-      .then((data) => {
-        setCards(data);
-      })
-      .catch((err) => {
-        console.error("Erro ao buscar cartões:", err);
-      });
-  }, []);
 
   function handleCardClick(card) {
     const imagePopup = {
       title: null,
       children: <ImagePopup image={card} />,
     };
-    setPopup(imagePopup);
-  }
-
-  function handleCardDelete(card) {
-    api
-      .deleteCard(card._id)
-      .then(() => {
-        setCards((state) => state.filter((c) => c._id !== card._id));
-      })
-      .catch((err) => {
-        console.error("Erro ao excluir o cartão:", err);
-      });
-  }
-
-  async function handleCardLike(card) {
-    // Verificar mais uma vez se esse cartão já foi curtido
-    const isLiked = card.isLiked;
-
-    // Enviar uma solicitação para a API e obter os dados do cartão atualizados
-    await api
-      .changeLikeCardStatus(card._id, !isLiked)
-      .then((newCard) => {
-        setCards((state) =>
-          state.map((currentCard) =>
-            currentCard._id === card._id ? newCard : currentCard
-          )
-        );
-      })
-      .catch((error) => console.error(error));
+    onOpenPopup(imagePopup);
   }
 
   return (
@@ -103,18 +70,28 @@ export default function Main({ onOpenPopup, onClosePopup, popup }) {
             onClick={() => onOpenPopup(newCardPopup)}
           ></button>
         </div>
+
         <ul className="elements">
-          {cards.map((card) => (
-            <Card
-              key={card._id}
-              card={card}
-              onCardClick={handleCardClick}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
-            />
-          ))}
+          {cards.map((card) => {
+            const isLiked =
+              Array.isArray(card.likes) && currentUser?._id
+                ? card.likes.some((user) => user._id === currentUser._id)
+                : false;
+
+            return (
+              <Card
+                key={card._id}
+                card={{ ...card, isLiked }}
+                onCardClick={handleCardClick}
+                onCardLike={onCardLike}
+                onCardDelete={onCardDelete}
+              />
+            );
+          })}
         </ul>
+
         <Footer />
+
         {popup && (
           <Popup onClose={onClosePopup} title={popup.title}>
             {popup.children}

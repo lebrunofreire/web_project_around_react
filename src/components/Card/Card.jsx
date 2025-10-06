@@ -37,7 +37,7 @@ export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
         <span>{name}</span>
         <button
           className={cardLikeButtonClassName}
-          onClick={handleLikeClick}
+          onClick={() => onCardLike(card)}
         ></button>
       </p>
     </li>
