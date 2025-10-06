@@ -11,10 +11,13 @@ import EditProfile from "../EditProfile/EditProfile";
 import api from "../../utils/api";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-export default function Main() {
+export default function Main({{ onOpenPopup, onClosePopup, popup }}) {
   const { currentUser } = useContext(CurrentUserContext);
   const [cards, setCards] = useState([]);
-  const [popup, setPopup] = useState(null);
+  const newCardPopup = { title: "New card", children: <NewCard /> };
+  const editAvatarPopup = { title: "Edit avatar", children: <EditAvatar /> };
+  const editProfilePopup = { title: "Edit profile", children: <EditProfile /> };
+
 
   useEffect(() => {
     api
@@ -30,14 +33,6 @@ export default function Main() {
   const newCardPopup = { title: "New card", children: <NewCard /> };
   const editAvatarPopup = { title: "Edit avatar", children: <EditAvatar /> };
   const editProfilePopup = { title: "Edit profile", children: <EditProfile /> };
-
-  function handleOpenPopup(popup) {
-    setPopup(popup);
-  }
-
-  function handleClosePopup() {
-    setPopup(null);
-  }
 
   function handleCardClick(card) {
     const imagePopup = {
@@ -89,7 +84,7 @@ export default function Main() {
             <button
               className="author-avatar-edit-button"
               type="button"
-              onClick={() => handleOpenPopup(editAvatarPopup)}
+              onClick={() => onOpenPopup(editAvatarPopup)}
             ></button>
           </div>
           <div className="author-info">
@@ -100,7 +95,7 @@ export default function Main() {
               <button
                 id="openModalBtn"
                 className="author-edit"
-                onClick={() => handleOpenPopup(editProfilePopup)}
+                onClick={() => onOpenPopup(editProfilePopup)}
               ></button>
             </div>
             <p className="author-subtitle" id="profileTitle">
@@ -110,7 +105,7 @@ export default function Main() {
           <button
             id="openPlaceModalBtn"
             className="author-add"
-            onClick={() => handleOpenPopup(newCardPopup)}
+            onClick={() => onOpenPopup(newCardPopup)}
           ></button>
         </div>
         <ul className="elements">
@@ -126,7 +121,7 @@ export default function Main() {
         </ul>
         <Footer />
         {popup && (
-          <Popup onClose={handleClosePopup} title={popup.title}>
+          <Popup onClose={onClosePopup} title={popup.title}>
             {popup.children}
           </Popup>
         )}

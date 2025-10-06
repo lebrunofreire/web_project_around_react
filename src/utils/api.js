@@ -29,7 +29,7 @@ class Api {
     return this._makeRequest("/users/me");
   }
 
-  updateProfile(data) {
+  setUserInfo(data) {
     return this._makeRequest("/users/me", "PATCH", {
       name: data.name,
       about: data.about,

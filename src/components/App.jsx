@@ -7,6 +7,33 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [popup, setPopup] = useState(null);
 
+  // Controle de popups
+  const handleOpenPopup = (popupConfig) => {
+    setPopup(popupConfig);
+  };
+
+  const handleClosePopup = () => {
+    setPopup(null);
+  };
+
+  useEffect(() => {
+    api.getUserInfo().then((data) => {
+      setCurrentUser(data);
+    });
+  }, []);
+
+  const handleUpdateUser = (data) => {
+    (async () => {
+      await api
+        .setUserInfo(data)
+        .then((newData) => {
+          setCurrentUser(newData);
+          handleClosePopup();
+        })
+        .catch((error) => console.error(error));
+    })();
+  };
+
   function handleUpdateAvatar(data) {
     api
       .updateAvatar(data.avatar)
@@ -18,37 +45,6 @@ function App() {
         console.error("Erro ao atualizar avatar:", err);
       });
   }
-  // Buscar dados do usuário
-  useEffect(() => {
-    api
-      .getUserInfo()
-      .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch((err) => {
-        console.error("Erro ao buscar informações do usuário:", err);
-      });
-  }, []);
-
-  // Atualizar perfil
-  const handleUpdateUser = (data) => {
-    api
-      .updateProfile(data)
-      .then((newData) => {
-        setCurrentUser(newData);
-        handleClosePopup();
-      })
-      .catch((error) => console.error(error));
-  };
-
-  // Controle de popups
-  const handleOpenPopup = (popupConfig) => {
-    setPopup(popupConfig);
-  };
-
-  const handleClosePopup = () => {
-    setPopup(null);
-  };
 
   return (
     <CurrentUserContext.Provider value={{ currentUser, handleUpdateUser }}>

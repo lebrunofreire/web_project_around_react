@@ -17,9 +17,9 @@ export default function EditProfile() {
     e.preventDefault();
     handleUpdateUser({ name, about: description });
   }
-  
+
   return (
-    <form id="profileForm">
+    <form id="profileForm" onSubmit={handleSubmit} noValidate>
       <input
         type="text"
         id="nameInput"
@@ -27,6 +27,8 @@ export default function EditProfile() {
         placeholder="Name"
         minLength="2"
         maxLength="40"
+        value={name}
+        onChange={handleNameChange}
         required
       />
       <span className="error-Message"></span>
@@ -37,6 +39,8 @@ export default function EditProfile() {
         placeholder="Title"
         minLength="2"
         maxLength="200"
+        value={description}
+        onChange={handleDescriptionChange}
         required
       />
       <span className="error-Message"></span>
