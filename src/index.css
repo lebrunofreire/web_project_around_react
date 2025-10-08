@@ -8,38 +8,3 @@
 @import url(../blocks/modal.css);
 @import url(../blocks/image-modal.css);
 
-input.valid {
-  border-bottom: 2px solid green;
-}
-
-input.invalid {
-  border-bottom: 2px solid red;
-}
-
-button[type="submit"]:disabled {
-  background-color: #6c757d;
-  color: #fff;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.error-Message {
-  color: red;
-}
-
-/* Estado base: oculto */
-.popup {
-  display: none;
-}
-
-/* Quando aberto pela classe JS */
-.popup.popup_opened {
-  display: flex; /* ou block, conforme seu layout */
-}
-
-/* Exemplo comum de overlay centralizado */
-.popup.modal,
-.popup.image-modal {
-  align-items: center;
-  justify-content: center;
-}
