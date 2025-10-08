@@ -60,15 +60,29 @@ function App() {
     }
   };
 
-  const handleCardLike = async (card) => {
-    const isLiked = card.likes.some((user) => user._id === currentUser._id);
+  async function handleCardLike(card) {
+    const isLiked =
+      Array.isArray(card.likes) && currentUser?._id
+        ? card.likes.some((user) => user._id === currentUser._id)
+        : false;
+
     try {
-      const newCard = await api.changeLikeCardStatus(card._id, !isLiked);
-      setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+      const updatedCard = await api.changeLikeCardStatus(card._id, !isLiked);
+
+      // Se a API não retornar o campo likes, atualiza manualmente
+      if (!updatedCard.likes) {
+        updatedCard.likes = isLiked
+          ? card.likes.filter((user) => user._id !== currentUser._id)
+          : [...card.likes, { _id: currentUser._id }];
+      }
+
+      setCards((state) =>
+        state.map((c) => (c._id === card._id ? updatedCard : c))
+      );
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao atualizar like:", error);
     }
-  };
+  }
 
   const handleCardDelete = async (card) => {
     try {

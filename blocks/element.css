@@ -60,6 +60,6 @@
   opacity: 50%;
 }
 
-.element-image-like.liked {
+.element-image-like_active {
   background-image: url("../images/Union.png");
 }

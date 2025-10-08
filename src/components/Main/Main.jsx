@@ -73,15 +73,15 @@ export default function Main({
 
         <ul className="elements">
           {cards.map((card) => {
-            const isLiked =
-              Array.isArray(card.likes) && currentUser?._id
-                ? card.likes.some((user) => user._id === currentUser._id)
-                : false;
+            const safeLikes = Array.isArray(card.likes) ? card.likes : [];
+            const isLiked = currentUser?._id
+              ? safeLikes.some((user) => user._id === currentUser._id)
+              : false;
 
             return (
               <Card
                 key={card._id}
-                card={{ ...card, isLiked }}
+                card={{ ...card, likes: safeLikes, isLiked }}
                 onCardClick={handleCardClick}
                 onCardLike={onCardLike}
                 onCardDelete={onCardDelete}

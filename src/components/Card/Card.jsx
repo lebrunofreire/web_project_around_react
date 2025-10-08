@@ -1,14 +1,19 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
-  const { name, link, isLiked } = card;
+  const currentUser = useContext(CurrentUserContext);
+
+  // Proteção contra dados incompletos
+  if (!card || !card.owner || !currentUser) return null;
+
+  const { name, link, isLiked = false } = card;
+
+  const isOwn = card.owner._id === currentUser._id;
+
   const cardLikeButtonClassName = `element-image-like ${
     isLiked ? "element-image-like_active" : ""
   }`;
-
-  const currentUser = useContext(CurrentUserContext);
-  const isOwn = card.owner._id === currentUser._id;
 
   function handleLikeClick() {
     onCardLike(card);
@@ -37,8 +42,9 @@ export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
         <span>{name}</span>
         <button
           className={cardLikeButtonClassName}
-          onClick={() => onCardLike(card)}
-        ></button>
+          onClick={handleLikeClick}
+          aria-label="Curtir"
+        />
       </p>
     </li>
   );
