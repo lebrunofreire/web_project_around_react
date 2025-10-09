@@ -81,7 +81,7 @@ export default function Main({
             return (
               <Card
                 key={card._id}
-                card={{ ...card, likes: safeLikes, isLiked }}
+                card={card} // sem sobrescrever isLiked
                 onCardClick={handleCardClick}
                 onCardLike={onCardLike}
                 onCardDelete={onCardDelete}

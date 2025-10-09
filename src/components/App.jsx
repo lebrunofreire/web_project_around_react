@@ -16,10 +16,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    api
-      .getInitialCards()
-      .then((data) => setCards(data))
-      .catch((err) => console.error("Erro ao buscar cartões:", err));
+    api.getInitialCards().then((data) => {
+      console.log("Cards recebidos:", data);
+      setCards(data);
+    });
   }, []);
 
   const handleOpenPopup = (popupConfig) => {

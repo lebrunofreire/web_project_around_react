@@ -1,22 +1,28 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   const currentUser = useContext(CurrentUserContext);
+  const [liked, setLiked] = useState(card.isLiked || false);
+  const isLiked =
+    Array.isArray(card.likes) && currentUser?._id
+      ? card.likes.some((user) => user._id === currentUser._id)
+      : false;
+  useEffect(() => {
+    setLiked(card.isLiked || false); // Atualiza se o card mudar
+  }, [card]);
 
-  // Proteção contra dados incompletos
   if (!card || !card.owner || !currentUser) return null;
-
-  const { name, link, isLiked = false } = card;
 
   const isOwn = card.owner._id === currentUser._id;
 
   const cardLikeButtonClassName = `element-image-like ${
-    isLiked ? "element-image-like_active" : ""
+    liked ? "element-image-like_active" : ""
   }`;
 
   function handleLikeClick() {
-    onCardLike(card);
+    setLiked(!liked); // Atualiza localmente
+    onCardLike(card); // Chama função externa para persistir
   }
 
   function handleDeleteClick() {
@@ -27,8 +33,8 @@ export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
     <li className="element">
       <img
         className="element-image"
-        src={link}
-        alt={name}
+        src={card.link}
+        alt={card.name}
         onClick={() => onCardClick(card)}
       />
       {isOwn && (
@@ -39,7 +45,7 @@ export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
         />
       )}
       <p className="element-image-title">
-        <span>{name}</span>
+        <span>{card.name}</span>
         <button
           className={cardLikeButtonClassName}
           onClick={handleLikeClick}

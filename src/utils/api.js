@@ -12,8 +12,10 @@ class Api {
     if (body) {
       options.body = JSON.stringify(body);
     }
-    return fetch(`${this._baseUrl}${endpoint}`, options).then(
-      this._handleResponse
+
+    // ✅ Correção: usar arrow function para manter o contexto do `this`
+    return fetch(`${this._baseUrl}${endpoint}`, options).then((res) =>
+      this._handleResponse(res)
     );
   }
 
