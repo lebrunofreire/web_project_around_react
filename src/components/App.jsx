@@ -61,19 +61,20 @@ function App() {
   };
 
   async function handleCardLike(card) {
-    const isLiked =
-      Array.isArray(card.likes) && currentUser?._id
-        ? card.likes.some((user) => user._id === currentUser._id)
-        : false;
+    const safeLikes = Array.isArray(card.likes) ? card.likes : [];
+
+    const isLiked = currentUser?._id
+      ? safeLikes.some((user) => user._id === currentUser._id)
+      : false;
 
     try {
       const updatedCard = await api.changeLikeCardStatus(card._id, !isLiked);
 
-      // Se a API não retornar o campo likes, atualiza manualmente
-      if (!updatedCard.likes) {
+      // Garante que updatedCard.likes seja um array
+      if (!Array.isArray(updatedCard.likes)) {
         updatedCard.likes = isLiked
-          ? card.likes.filter((user) => user._id !== currentUser._id)
-          : [...card.likes, { _id: currentUser._id }];
+          ? safeLikes.filter((user) => user._id !== currentUser._id)
+          : [...safeLikes, { _id: currentUser._id }];
       }
 
       setCards((state) =>
